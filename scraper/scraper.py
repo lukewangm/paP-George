@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import argparse
 import sqlite3
+import tqdm
 
 def scrape(journal_name, URL):
 
@@ -74,7 +75,7 @@ def scrape(journal_name, URL):
         articles = soup.find_all('article', class_ = "c-listing__content")
         # print(URL)
         # print(len(articles))
-        for article in articles:
+        for article in tqdm.tqdm(articles, desc = "Scraping Articles"):
             title = article.find('h3', class_ = "c-listing__title").text.strip()
             full_link = article.find('ul', class_="c-listing__view-options").find('a', {'data-test': 'fulltext-link'}).get('href')
             
@@ -86,16 +87,38 @@ def scrape(journal_name, URL):
                 INSERT INTO articles (title, full_link, abstract)
                 VALUES (?, ?, ?)
             ''', (title, URL + full_link, abstract))
-
-            print(f"Title: {title}")
-            print(f"Link: {full_link}")
-            print(f"Abstract: {abstract}")
-            break
+            conn.commit()
+            # print(f"Title: {title}")
+            # print(f"Link: {full_link}")
+            # print(f"Abstract: {abstract}")
+            # break
             
+    conn.close()
+
+def reset_db():
+    conn = sqlite3.connect('articles.sqlite')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DROP TABLE IF EXISTS articles
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS articles (
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            full_link TEXT,
+            abstract TEXT
+        )
+    ''')
+
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Scrape articles from Different Journals")
     parser.add_argument('--journal', type = str, help = "Journal Name")
+    parser.add_argument('--reset', action = 'store_true', help = "Reset the database")
     args = parser.parse_args()
     url = ""
     if args.journal == "Frontiers":
@@ -105,4 +128,6 @@ if __name__ == "__main__":
     else:
         print("Please enter a valid journal name")
         exit()
+    if args.reset:
+        reset_db()
     scrape(args.journal, url)
