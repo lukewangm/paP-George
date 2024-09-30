@@ -4,14 +4,18 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #343030;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #343030; 
     --foreground: #ededed;
   }
+}
+
+textarea {
+  color: var(--background);
 }
 
 body {

@@ -18,4 +18,4 @@ export default function About() {
         </ul>
 
         </div>
-  }2
+  }

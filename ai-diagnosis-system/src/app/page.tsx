@@ -7,7 +7,7 @@ export default function Home() {
       <h1 className="lg:text-5xl text-3xl font-bold">
         Determine your illness by reading similiar doctors reports
       </h1>
-      <h3 className="lg:text-xl text-lg text-gray-500 font-normal mt-2 mb-3">
+      <h3 className="lg:text-xl text-lg text-gray-500 font-normal mt-2 mb-3 ">
         5% of diseases are left undiagnosed. Let's diagnose them!
       </h3>
         <NavLink

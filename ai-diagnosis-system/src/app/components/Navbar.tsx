@@ -41,10 +41,10 @@ const Navbar = () => {
         }`}
       >
         <div className="custom-screen items-center mx-auto md:flex">
-          <div className="flex items-center justify-between py-3 md:py-5 md:block">
+          <div className="flex items-center justify-between py-3 md:py-5 md:block ml-2">
             <Link href="/" className="flex items-center gap-3">
               <Image src="/favicon.ico" alt="logo" width={30} height={30} />
-              <div className="font-bold text-lg">Diagnosis System</div>
+              <div className="font-bold text-lg text-black dark:text-black">Diagnosis System</div>
             </Link>
             <div className="md:hidden">
               <button
@@ -56,7 +56,7 @@ const Navbar = () => {
                 {state ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-6 w-6 mr-2"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -73,7 +73,7 @@ const Navbar = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="w-6 h-6 mr-2"
                   >
                     <path
                       strokeLinecap="round"
@@ -93,7 +93,7 @@ const Navbar = () => {
             <ul className="text-gray-700 justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 md:text-gray-600 md:font-medium">
               {navigation.map((item, idx) => {
                 return (
-                  <li key={idx} className="duration-150 hover:text-gray-900">
+                  <li key={idx} className="duration-150 hover:text-gray-900 text-center">
                     <Link href={item.path} className="block">
                       {item.title}
                     </Link>
@@ -103,7 +103,7 @@ const Navbar = () => {
               <li>
                 <NavLink
                   href="/start"
-                  className="block font-medium text-sm text-white bg-gray-800 hover:bg-gray-600 active:bg-gray-900 md:inline"
+                  className="block font-medium text-sm text-white bg-gray-800 hover:bg-gray-600 active:bg-gray-900 md:inline lg:mr-2"
                 >
                   Try it
                 </NavLink>
