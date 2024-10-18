@@ -3,16 +3,62 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-// const response = await fetch('/endpoint', {
-//     method: 'POST',
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//         symptoms,
-//         demographic,
-//     }),
-// });
+type Payload = {
+  symptoms: string | null;
+  lab: string | null;
+  physical: string | null;
+  age: string | null;
+  sex: string | null;
+};
+
+type ResponseData = [string, string, string]; // Assuming the response is an array with exactly three strings
+
+// Temporary fake response function
+const fakeFetch = () => {
+  return new Promise((resolve) => {
+    const list = ["link1", "link2", "link3"];
+    setTimeout(() => {
+      resolve({
+        ok: true,
+        json: async () => ({
+          message: 'Fake response received!',
+          data: {
+            list,
+          }
+        }),
+      });
+    }, 1000); // Simulate a delay
+  });
+};
+
+async function fetchItems(payload: Payload): Promise<ResponseData> {
+  try {
+      const response = await fetch("/JAGUO_ENDPOINT", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data: ResponseData = await response.json();
+
+      const [item1, item2, item3] = data;
+      console.log("Item 1:", item1);
+      console.log("Item 2:", item2);
+      console.log("Item 3:", item3);
+
+      return data;
+
+  } catch (error) {
+      console.error('Error:', error);
+      throw error;
+  }
+}
 
 const InputBody = () => {
   const router = useRouter();
@@ -22,49 +68,43 @@ const InputBody = () => {
     router.push(`/result?data=${encodeURIComponent(result)}`);
   };
 
-  // Temporary fake response function
-  const fakeFetch = () => {
-    return new Promise((resolve) => {
-      const list = ["link1", "link2", "link3"];
-      setTimeout(() => {
-        resolve({
-          ok: true,
-          json: async () => ({
-            message: 'Fake response received!',
-            data: {
-              list,
-            }
-          }),
-        });
-      }, 1000); // Simulate a delay
-    });
-  };
-
   async function onSubmit(formData: { get: (arg0: string) => any; }) {
     console.log("submiting request");
-    const symptoms = formData.get("symptoms");
-    const lab = formData.get("lab");
-    const physical = formData.get("physical");
-    const age = formData.get("age");
-    const sex = formData.get("sex");
-
+    
+    const payload: Payload = {
+      symptoms: formData.get("symptoms"),
+      lab: formData.get("lab"),
+      physical: formData.get("physical"),
+      age: formData.get("age"),
+      sex: formData.get("sex")
+  };
+    
+    fetch("/submission", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  
     try {
-      const response = await fakeFetch();
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json(); // This will call the json method
-      console.log('Success:', data);
-      // alert(`Response: ${JSON.stringify(data)}`); // Show the fake message
-      setResult(data);
-      handleNavigation(JSON.stringify(data));
+      const data = await fetchItems(payload)
+        .then(items => {
+          console.log("Received items:", items);
+          console.log('Success:', data);
+          alert(`Response: ${JSON.stringify(data)}`); // Show the fake message
+          // setResult(data.json());
+          handleNavigation(JSON.stringify(data));
+        });
     } catch (error) {
       console.error('Error:', error);
       alert('There was an error submitting your request.');
     }
   }
-
+  
   return (
     <div className="mt-5 mx-auto text-center">
       <h1 className="lg:text-5xl text-3xl font-bold">
