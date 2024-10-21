@@ -51,7 +51,7 @@ async function fetchItems(payload: Payload): Promise<ResponseData> {
       console.log("Item 1:", item1);
       console.log("Item 2:", item2);
       console.log("Item 3:", item3);
-
+      
       return data;
 
   } catch (error) {
@@ -78,26 +78,11 @@ const InputBody = () => {
       age: formData.get("age"),
       sex: formData.get("sex")
   };
-    
-    fetch("/submission", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  
     try {
       const data = await fetchItems(payload)
         .then(items => {
           console.log("Received items:", items);
-          console.log('Success:', data);
-          alert(`Response: ${JSON.stringify(data)}`); // Show the fake message
-          // setResult(data.json());
-          handleNavigation(JSON.stringify(data));
+          handleNavigation(items.toString());
         });
     } catch (error) {
       console.error('Error:', error);
