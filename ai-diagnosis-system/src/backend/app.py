@@ -17,29 +17,39 @@ db = SQLAlchemy(app)
 #     def __repr__(self):
 #         return ""
 
-# Mock AI Diagnosis Function
-def mock_ai_diagnosis(data):
-    symptoms = data.get("symptoms", "")
-    diagnosis = {
-        "symptoms": symptoms,
-        "possible_conditions": [
-            "Condition A",
-            "Condition B",
-            "Condition C"
-        ],
-        "recommendations": "Consult with a doctor for further diagnosis."
-    }
-    return diagnosis
+# Mock diagnosis function
 
-# API endpoint to receive data and return diagnosis
-@app.route("/api/diagnose", methods=["POST"])
+# Mock AI Diagnosis Function
+def mock_ai_diagnosis(payload):
+    # Extract the relevant fields from the payload
+    symptoms = payload.get("symptoms")
+    lab = payload.get("lab")
+    physical = payload.get("physical")
+    age = payload.get("age")
+    sex = payload.get("sex")
+    
+    # Generate mock response based on the input
+    response_urls = [
+        "https://medical-report.example.com/report1",
+        "https://medical-report.example.com/report2",
+        "https://medical-report.example.com/report3"
+    ]
+    
+    return response_urls
+
+# API route to handle the diagnosis request
+@app.route("/submission", methods=["POST"])
 def diagnose():
-    try:
-        data = request.json  # Receive JSON data from the frontend
-        diagnosis = mock_ai_diagnosis(data)
-        return jsonify({"message": "Diagnosis successful", "data": diagnosis}), 200
-    except Exception as e:
-        return jsonify({"message": str(e)}), 500
+    payload = request.json  # Get the JSON payload from the request
+
+    if not payload:
+        return jsonify({"error": "Invalid input"}), 400
+
+    # Generate the mock URLs response
+    response_data = mock_ai_diagnosis(payload)
+
+    # Return the response as a JSON array (matching [string, string, string] structure)
+    return jsonify(response_data)
 
 @app.route("/")
 def home():
