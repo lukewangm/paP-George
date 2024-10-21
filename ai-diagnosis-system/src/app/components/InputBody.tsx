@@ -33,7 +33,7 @@ const fakeFetch = () => {
 
 async function fetchItems(payload: Payload): Promise<ResponseData> {
   try {
-      const response = await fetch("/JAGUO_ENDPOINT", {
+      const response = await fetch("http://127.0.0.1:8000/submission", {
           method: "POST",
           headers: {
               "Content-Type": "application/json"
