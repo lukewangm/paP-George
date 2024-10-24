@@ -20,7 +20,7 @@ class Case:
 
     def __str__(self):
         s = ""
-        t = self.text if len(self.text) < 50 else self.text[:50] + "..."
+        t = self.text if len(self.text) < 20 else self.text[:20] + "..."
         if len(self.file_name) > 0:
             s += "{" + f"file_name: {self.file_name}; {t}" + "}"
         else:
@@ -68,7 +68,19 @@ if __name__ == "__main__":
     with open('data/notes/note_1.txt', 'r', encoding="utf-8") as file:
         query = file.read()
         query_nltk = nltk.word_tokenize(query.lower())
-    print("Simple query:")
-    print(db.simple_query(query_nltk, 2))
     print("\nBERT query:")
-    print(db.bert_query(query, 2))
+    print(db.bert_query(query, 5))
+
+
+    with open('data/notes/note_2.txt', 'r', encoding="utf-8") as file:
+        query = file.read()
+        query_nltk = nltk.word_tokenize(query.lower())
+    print("\nBERT query:")
+    print(db.bert_query(query, 5))
+
+
+    with open('data/notes/note_3.txt', 'r', encoding="utf-8") as file:
+        query = file.read()
+        query_nltk = nltk.word_tokenize(query.lower())
+    print("\nBERT query:")
+    print(db.bert_query(query, 5))
