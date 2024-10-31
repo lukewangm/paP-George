@@ -1,2 +1,2 @@
-# papaSamZeim
-Group for CSCI401 | Project 20
+# Group 20
+CSCI401 / Fall 2024
