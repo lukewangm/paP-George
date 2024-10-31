@@ -117,7 +117,7 @@ def reset_db():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Scrape articles from Different Journals")
-    parser.add_argument('--journal', type = str, help = "Journal Name")
+    parser.add_argument('--journal', type = str, choices=["Frontiers","Medical Case Reports"], help = "Journal Name")
     parser.add_argument('--reset', action = 'store_true', help = "Reset the database")
     args = parser.parse_args()
     url = ""
