@@ -79,41 +79,38 @@ def call_api(prompt, system_prompt=None):
 
     return return_str
 
-
-def main():
-    # assume that our query is in the following path
+def get_openai_response(query, num_articles=10):
+    # this function will return an array of dictionaries with the following structure:
+    # [{
+    #     "id": "1",
+    #     "explanation": "case_1 is relevant because..."
+    #     "url": "https://www.example.com",
+    #     "title": "Case 1 Title"
+    # }]
+    # PLEASE make sure the query passed in is a STRING containing the doctor's note.
 
     path_to_sqlite = "scraper/articles.sqlite"
 
     # this is an array of articles, each article having four elements: id, title, full_link, abstract
-    total_cases = get_all(path_to_sqlite)[:10] # for now we only use 10 articles in the database
+    total_cases = get_all(path_to_sqlite)[:num_articles]  # TODO: remove and replace with BM25 filter
     id_to_case_map = dict([(case[0], case) for case in total_cases])
-
-    with open('data/notes/note_3.txt', 'r', encoding="utf-8") as file:
-        query = file.read()
-        query_nltk = nltk.word_tokenize(query.lower())
-
-    # loads the documents
-    # total_cases = build_database()
-
-    # future: makes the bm25 filter
 
     # makes the request
     instruction = \
-    """Imagine you are a highly skilled, multidisciplinary doctor. You’ve received a complex medical notes from a colleague, and everyone is struggling to make a clear diagnosis. Fortunately, you have access to several previously solved medical cases, and some of these cases are related to the current patient’s condition. You are provided with short abstracts summarizing these solved cases.
-    Your task:
-    - Carefully review the provided abstracts.
-    - Select the most relevant cases that could provide insight into the current diagnosis.
-    - Explain why you believe this case is the most relevant, based on symptoms, medical history, or other key details.
+        """Imagine you are a highly skilled, multidisciplinary doctor. You’ve received a complex medical notes from a colleague, and everyone is struggling to make a clear diagnosis. Fortunately, you have access to several previously solved medical cases, and some of these cases are related to the current patient’s condition. You are provided with short abstracts summarizing these solved cases.
+        Your task:
+        - Carefully review the provided abstracts.
+        - Select the most relevant cases that could provide insight into the current diagnosis.
+        - Explain why you believe this case is the most relevant, based on symptoms, medical history, or other key details.
     
-    You can select multiple case studies if you believe they are all relevant.
+        You can select multiple case studies if you believe they are all relevant.
     
-    Your response should be in a json format of the following structure:
-    {
-        "relevant_case": "case_1",
-        "explanation": "case_1 is relevant because..."
-    }
-    """
+        Your response should be in a json format of the following structure:
+        {
+            "relevant_case": "case_1",
+            "explanation": "case_1 is relevant because..."
+        }
+        """
 
     prompt = f"{instruction}\n\n<doctor_note>: \n{query}\n\n"
     # shuffle the cases
@@ -124,7 +121,7 @@ def main():
         prompt += f"<case_{id}>: \n{abstract}\n\n"
     # Gets the response
 
-    # cache the results for now
+    # TODO: remove later, but cache the results for now to save API calls
     cached_dir_fn = "query_cache.txt"
     if os.path.exists(cached_dir_fn):
         with open(cached_dir_fn, 'r') as f:
@@ -151,10 +148,19 @@ def main():
         temp_obj["title"] = id_to_case_map[id][1]
         relevant_cases.append(temp_obj)
 
-    import pdb
-    pdb.set_trace()
     # return the array
     return relevant_cases
+
+def main():
+
+    with open('data/notes/note_3.txt', 'r', encoding="utf-8") as file:
+        query = file.read()
+        query_nltk = nltk.word_tokenize(query.lower())
+
+    json_object = json.dumps(get_openai_response(query, num_articles=10))
+
+    import pdb
+    pdb.set_trace()
 
 
 if __name__ == "__main__":

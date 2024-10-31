@@ -10,9 +10,9 @@ def get_all(path_to_sqlite):
     ''')
 
     articles = cursor.fetchall()
-    for article in articles:
-        print(f"Title: {article[1]}\n {article[3]}")
-        print()
+    # for article in articles:
+    #     print(f"Title: {article[1]}\n {article[3]}")
+    #     print()
 
     conn.commit()
     conn.close()
@@ -47,9 +47,9 @@ def get_range(path_to_sqlite, start, end):
     ''', (start, end))
 
     articles = cursor.fetchall()
-    for article in articles:
-        print(f"Title: {article[1]}\n {article[3]}")
-        print()
+    # for article in articles:
+    #     print(f"Title: {article[1]}\n {article[3]}")
+    #     print()
     
     conn.commit()
     conn.close()
@@ -64,7 +64,7 @@ def get_size(path_to_sqlite):
     ''')
 
     articles = cursor.fetchall()
-    print(len(articles))
+    # print(len(articles))
 
     conn.commit()
     conn.close()
