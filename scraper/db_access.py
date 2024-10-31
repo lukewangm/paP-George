@@ -1,8 +1,8 @@
 import argparse
 import sqlite3
 
-def get_all():
-    conn = sqlite3.connect('articles.sqlite')
+def get_all(path_to_sqlite):
+    conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -16,9 +16,10 @@ def get_all():
 
     conn.commit()
     conn.close()
+    return articles
 
-def reset():
-    conn = sqlite3.connect('articles.sqlite')
+def reset(path_to_sqlite):
+    conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -37,8 +38,8 @@ def reset():
     conn.commit()
     conn.close()
 
-def get_range(start, end):
-    conn = sqlite3.connect('articles.sqlite')
+def get_range(path_to_sqlite, start, end):
+    conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -52,9 +53,10 @@ def get_range(start, end):
     
     conn.commit()
     conn.close()
+    return articles
 
-def get_size():
-    conn = sqlite3.connect('articles.sqlite')
+def get_size(path_to_sqlite):
+    conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -77,17 +79,18 @@ if __name__ == "__main__":
     parser.add_argument('--size', type = str, help = "Size of Articles")
     args = parser.parse_args()
 
+    path_to_sqlite = "articles.sqlite"
     if args.all:
-       get_all()
+       get_all(path_to_sqlite)
     
     if args.reset:
-        reset()
+        reset(path_to_sqlite)
 
     if args.range:
         start, end = args.range.split(',')
-        get_range(start, end)
+        get_range(path_to_sqlite, start, end)
     
     if args.size:
-        get_size()
+        get_size(path_to_sqlite)
         
 
