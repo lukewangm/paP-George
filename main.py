@@ -1,8 +1,10 @@
+import json
 import os
 import nltk
 from nltk.corpus import stopwords
 from openai import OpenAI
 from credentials import OPENAI_API_KEY
+from scraper.db_access import get_all
 
 nltk.download('punkt_tab')
 nltk.download('stopwords')
@@ -69,19 +71,30 @@ def call_api(prompt, system_prompt=None):
         response_format={"type": "json_object"}
     )
 
+    return_str = ""
+
     for chunk in stream:
         if chunk.choices[0].delta.content is not None:
-            print(chunk.choices[0].delta.content, end="")
+            return_str += chunk.choices[0].delta.content
+
+    return return_str
 
 
 def main():
     # assume that our query is in the following path
+
+    path_to_sqlite = "scraper/articles.sqlite"
+
+    # this is an array of articles, each article having four elements: id, title, full_link, abstract
+    total_cases = get_all(path_to_sqlite)[:10] # for now we only use 10 articles in the database
+    id_to_case_map = dict([(case[0], case) for case in total_cases])
+
     with open('data/notes/note_3.txt', 'r', encoding="utf-8") as file:
         query = file.read()
         query_nltk = nltk.word_tokenize(query.lower())
 
     # loads the documents
-    total_cases = build_database()
+    # total_cases = build_database()
 
     # future: makes the bm25 filter
 
@@ -106,17 +119,42 @@ def main():
     # shuffle the cases
     import random
     random.shuffle(total_cases)
-    for i, case in enumerate(total_cases):
-        prompt += f"<case_{i}>: \n{case.text}\n\n"
+    for case in total_cases:
+        id, title, full_link, abstract = case
+        prompt += f"<case_{id}>: \n{abstract}\n\n"
+    # Gets the response
+
+    # cache the results for now
+    cached_dir_fn = "query_cache.txt"
+    if os.path.exists(cached_dir_fn):
+        with open(cached_dir_fn, 'r') as f:
+            return_str = f.read()
+    else:
+        print("about to call api")
+        return_str = call_api(prompt)
+        with open(cached_dir_fn, 'w') as f:
+            f.write(return_str)
+
+    return_str = json.loads(return_str)["relevant_cases"]
+
+    # we now parse the response
+    relevant_cases = []
+
+    for key in return_str:
+        if "case_id" not in key or "explanation" not in key:
+            continue
+        id = int(key["case_id"].split("_")[1])
+        temp_obj = {}
+        temp_obj["id"] = id
+        temp_obj["explanation"] = key["explanation"]
+        temp_obj["url"] = id_to_case_map[id][2]
+        temp_obj["title"] = id_to_case_map[id][1]
+        relevant_cases.append(temp_obj)
+
     import pdb
     pdb.set_trace()
-    # Gets the response
-    call_api(prompt)
-
-
-
-
-    # return
+    # return the array
+    return relevant_cases
 
 
 if __name__ == "__main__":
