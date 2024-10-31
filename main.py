@@ -4,6 +4,7 @@ import nltk
 from nltk.corpus import stopwords
 from openai import OpenAI
 from credentials import OPENAI_API_KEY
+from prefilter import bm25_prefilter
 from scraper.db_access import get_all
 
 nltk.download('punkt_tab')
@@ -92,7 +93,12 @@ def get_openai_response(query, num_articles=10):
     path_to_sqlite = "scraper/articles.sqlite"
 
     # this is an array of articles, each article having four elements: id, title, full_link, abstract
-    total_cases = get_all(path_to_sqlite)[:num_articles]  # TODO: remove and replace with BM25 filter
+    total_cases = get_all(path_to_sqlite)
+
+    # we implement bm25 filter here
+    total_cases = bm25_prefilter(total_cases, query, k=num_articles)
+
+    # we create a dictionary mapping the id to the case
     id_to_case_map = dict([(case[0], case) for case in total_cases])
 
     # makes the request
@@ -106,10 +112,14 @@ def get_openai_response(query, num_articles=10):
         You can select multiple case studies if you believe they are all relevant.
     
         Your response should be in a json format of the following structure:
+        {'relevant_cases': [{
+            "case_id": "case_4",
+            "explanation": "This case is relevant because..."
+        },
         {
-            "relevant_case": "case_1",
-            "explanation": "case_1 is relevant because..."
-        }
+            "case_id": "case_7",
+            "explanation": "This case is relevant because..."
+        }]}
         """
 
     prompt = f"{instruction}\n\n<doctor_note>: \n{query}\n\n"
@@ -122,16 +132,21 @@ def get_openai_response(query, num_articles=10):
     # Gets the response
 
     # TODO: remove later, but cache the results for now to save API calls
-    cached_dir_fn = "query_cache.txt"
-    if os.path.exists(cached_dir_fn):
-        with open(cached_dir_fn, 'r') as f:
-            return_str = f.read()
-    else:
-        print("about to call api")
-        return_str = call_api(prompt)
-        with open(cached_dir_fn, 'w') as f:
-            f.write(return_str)
+    # cached_dir_fn = "query_cache.txt"
+    # if os.path.exists(cached_dir_fn):
+    #     with open(cached_dir_fn, 'r') as f:
+    #         return_str = f.read()
+    # else:
+    #     print("about to call api")
+    #     return_str = call_api(prompt)
+    #     with open(cached_dir_fn, 'w') as f:
+    #         f.write(return_str)
 
+    return_str = call_api(prompt)
+    print(return_str)
+
+    if ("relevant_cases" not in return_str):
+        return []
     return_str = json.loads(return_str)["relevant_cases"]
 
     # we now parse the response
