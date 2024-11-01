@@ -164,7 +164,11 @@ def get_openai_response(query, num_articles=10):
         relevant_cases.append(temp_obj)
 
     # return the array
-    return relevant_cases
+
+
+
+    # json.dumps(get_openai_response(query, num_articles=10))
+    return json.dumps(relevant_cases)
 
 def main():
 
@@ -172,7 +176,7 @@ def main():
         query = file.read()
         query_nltk = nltk.word_tokenize(query.lower())
 
-    json_object = json.dumps(get_openai_response(query, num_articles=10))
+    json_object = get_openai_response(query, num_articles=10)
 
     import pdb
     pdb.set_trace()
