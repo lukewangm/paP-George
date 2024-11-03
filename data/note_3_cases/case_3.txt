@@ -1,0 +1,13 @@
+Sputum cultures for the evaluation of bacterial pneumonia
+
+INTRODUCTION
+
+Lower respiratory tract infections are common in the general population, occurring with increased frequency in older individuals and those with chronic diseases or compromised immune function. An etiologic diagnosis can be made by culture of respiratory tract secretions, by isolation of a compatible organism from blood or pleural fluid cultures, or by molecular methods.
+
+While a positive blood or pleural fluid culture definitively identifies the pathogen, an organism growing from a respiratory specimen or detected by a molecular amplification method is not definitive proof that it is the etiologic agent. Many bacterial species are normal flora or colonizers of the respiratory tract and, although present in respiratory secretions, they may not be responsible for the clinical illness in an individual patient with pneumonia due to another cause. As a result, there is controversy about the diagnostic significance of many cultures or molecular results obtained from respiratory specimens. (See "Clinical evaluation and diagnostic testing for community-acquired pneumonia in adults" and "Epidemiology, pathogenesis, microbiology, and diagnosis of hospital-acquired and ventilator-associated pneumonia in adults" and "Clinical presentation and diagnostic evaluation of ventilator-associated pneumonia".)
+
+A rational approach to specimen collection and the interpretation of results is required if clinically useful information is to be obtained [1]. The value and limitations of sputum cultures in patients with suspected bacterial pneumonia as well as the clinical indications for obtaining sputum cultures in such patients will be reviewed here.
+
+Issues related to specimen transport to the laboratory, general approach to Gram stain and culture, and examples of clinical microbiology findings in patients with respiratory tract infections are discussed separately. (See "Microbiology specimen collection and transport" and "Approach to Gram stain and culture results in the microbiology laboratory".)
+
+The approach to the evaluation of patients with possible tuberculosis, Pneumocystis jirovecii (formerly Pneumocystis carinii) pneumonia, invasive aspergillosis, influenza, and other respiratory viral infections is also discussed separately.
