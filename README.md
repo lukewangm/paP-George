@@ -11,3 +11,11 @@ Prepare the dataset by going into the "scraper" folder with command `cd scraper`
 
 ### Setup OpenAI API
 At the root directory, create a file called `credentials.py` and add the OpenAI API key as a variable called `OPENAI_API_KEY`. See group chat for more information. 
+
+Starting the backend flask server
+$ source venv/bin/activate
+$ python app.py
+
+Starting the frontend next server
+$ npm run dev
+

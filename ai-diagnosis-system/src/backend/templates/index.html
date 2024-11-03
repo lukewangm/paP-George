@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Diagnosis System</title>
+</head>
+<body>
+    <h1>AI-Driven Medical Diagnosis</h1>
+    
+    <form method="POST">
+        <label for="symptoms">Enter your symptoms:</label>
+        <input type="text" id="symptoms" name="symptoms" required>
+        <button type="submit">Get Diagnosis</button>
+    </form>
+
+    {% if diagnosis %}
+        <h2>Diagnosis for "{{ symptoms }}":</h2>
+        <p>{{ diagnosis }}</p>
+    {% endif %}
+</body>
+</html>
