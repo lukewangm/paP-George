@@ -71,27 +71,60 @@ def scrape(journal_name, URL):
             print(authors)
     elif journal_name == "Medical Case Reports":
         page = requests.get(URL + "/articles")
+        # page = requests.get("https://jmedicalcasereports.biomedcentral.com/articles?searchType=journalSearch&sort=PubDate&page=149")
         soup = BeautifulSoup(page.content, "html.parser")
-        articles = soup.find_all('article', class_ = "c-listing__content")
-        # print(URL)
-        # print(len(articles))
-        for article in tqdm.tqdm(articles, desc = "Scraping Articles"):
-            title = article.find('h3', class_ = "c-listing__title").text.strip()
-            full_link = article.find('ul', class_="c-listing__view-options").find('a', {'data-test': 'fulltext-link'}).get('href')
-            
-            article_page = requests.get(URL + full_link)
-            article_soup = BeautifulSoup(article_page.content, "html.parser")
-            abstract = article_soup.find('section', {'aria-labelledby': 'Abs1'}).get_text(separator='\n', strip=True)
-            
-            cursor.execute('''
-                INSERT INTO articles (title, full_link, abstract)
-                VALUES (?, ?, ?)
-            ''', (title, URL + full_link, abstract))
-            conn.commit()
-            # print(f"Title: {title}")
-            # print(f"Link: {full_link}")
-            # print(f"Abstract: {abstract}")
-            # break
+        iteration = 0
+
+        while True:
+            articles = soup.find_all('article', class_ = "c-listing__content")
+            # print(URL)
+            # print(len(articles))
+            for article in tqdm.tqdm(articles, desc = "Scraping Articles"):
+                title = article.find('h3', class_ = "c-listing__title").text.strip()
+                metadata_div = article.find('div', class_="c-listing__metadata")
+
+                if metadata_div:
+                    # Find the span element with the data-test="result-list" attribute
+                    content_type_span = metadata_div.find('span', {'data-test': 'result-list'})
+                    
+                    if content_type_span:
+                        # Extract the text content, excluding the nested span
+                        content_type = content_type_span.get_text(strip=True, separator=' ').replace('Content type: ', '')
+                    # print(content_type)
+                    if "Case report" not in content_type:
+                        continue
+                full_link = article.find('ul', class_="c-listing__view-options").find('a', {'data-test': 'fulltext-link'}).get('href')
+                # print(URL + full_link)
+                article_page = requests.get(URL + full_link)
+                article_soup = BeautifulSoup(article_page.content, "html.parser")
+                abstract_section = article_soup.find('section', {'aria-labelledby': 'Abs1'})
+                if abstract_section:
+                    abstract = abstract_section.get_text(separator='\n', strip=True)
+                else:
+                    continue
+                cursor.execute('''
+                    INSERT INTO articles (title, full_link, abstract)
+                    VALUES (?, ?, ?)
+                ''', (title, URL + full_link, abstract))
+                conn.commit()
+                # print(f"Title: {title}")
+                # print(f"Link: {full_link}")
+                # print(f"Abstract: {abstract}")
+                # break
+
+
+            # next page
+            pagination = soup.find('ul', class_="c-pagination")
+            next_page_link = pagination.find('a', rel="next")
+            if next_page_link:
+                next_page_url = next_page_link['href']
+            else:
+                break
+            page = requests.get(URL + next_page_url)
+            soup = BeautifulSoup(page.content, "html.parser")
+            # if iteration == 1:
+            #     break
+            # iteration += 1
             
     conn.close()
 
