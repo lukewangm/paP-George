@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import json
+import sys
+import os
+from main import get_openai_response
 
 app = Flask(__name__)
 CORS(app)
@@ -19,37 +23,37 @@ db = SQLAlchemy(app)
 
 # Mock diagnosis function
 
-# Mock AI Diagnosis Function
-def mock_ai_diagnosis(payload):
-    # Extract the relevant fields from the payload
-    symptoms = payload.get("symptoms")
-    lab = payload.get("lab")
-    physical = payload.get("physical")
-    age = payload.get("age")
-    sex = payload.get("sex")
+def format_payload(payload):
+    """Formats the payload into a query string for AI function"""
+    symptoms = payload.get("symptoms", "No symptoms provided")
+    lab = payload.get("lab", "No lab results provided")
+    physical = payload.get("physical", "No physical exam findings provided")
+    age = payload.get("age", "Unknown age")
+    sex = payload.get("sex", "Unknown sex")
     
-    # Generate mock response based on the input
-    response_urls = [
-        "https://medical-report.example.com/report1",
-        "https://medical-report.example.com/report2",
-        "https://medical-report.example.com/report3"
-    ]
-    
-    return response_urls
+    # Create a doctor's note style string for query
+    doctor_note = f"Symptoms: {symptoms}\nLab Findings: {lab}\nPhysical Exam: {physical}\nAge: {age}\nSex: {sex}"
+    return doctor_note
 
 # API route to handle the diagnosis request
 @app.route("/submission", methods=["POST"])
 def diagnose():
-    payload = request.json  # Get the JSON payload from the request
+    payload = request.json
 
     if not payload:
         return jsonify({"error": "Invalid input"}), 400
 
-    # Generate the mock URLs response
-    response_data = mock_ai_diagnosis(payload)
+    # Format the payload as a doctor note for the query
+    query = format_payload(payload)
 
-    # Return the response as a JSON array (matching [string, string, string] structure)
-    return jsonify(response_data)
+    # Call the AI function
+    ai_response = get_openai_response(query, num_articles=3)  # Fetch 3 articles
+
+    # Ensure the response is a JSON array of dictionaries
+    relevant_cases = json.loads(ai_response)
+
+    # Return the response as JSON
+    return jsonify(relevant_cases)
 
 @app.route("/")
 def home():

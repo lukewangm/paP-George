@@ -27,7 +27,7 @@ def build_corpus():
         corpuses.append([])
         for j in range(1, 6):
             corpuses[i-1].append("")
-            with open(f'data/note_{i}_cases/case_{j}.txt', 'r', encoding="utf-8") as file:
+            with open(f'../../../data/note_{i}_cases/case_{j}.txt', 'r', encoding="utf-8") as file:
                 for line in file:
                     corpuses[i-1][j-1] += line + "\n"
 
@@ -42,7 +42,7 @@ def build_corpus():
 
 corpuses = build_corpus()
 for i in range(3):
-    with open(f'data/notes/note_{i+1}.txt', 'r', encoding="utf-8") as file:
+    with open(f'../../../data/notes/note_{i+1}.txt', 'r', encoding="utf-8") as file:
         query = ""
         for line in file:
             query += line + "\n"

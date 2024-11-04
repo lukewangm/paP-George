@@ -76,13 +76,13 @@ async function fetchItems(payload: Payload): Promise<ResponseData> {
           title: "Circadian re-set repairs long-COVID in a prodromal Parkinson 2019s parallel: a case series"
         }
       ];
-      const [item1, item2, item3] = caseReports;
+      const [item1, item2, item3] = data;
       console.log("Item 1:", item1);
       console.log("Item 2:", item2);
       console.log("Item 3:", item3);
       
       // return data;
-      return caseReports;
+      return data;
 
   } catch (error) {
       console.error('Error:', error);
