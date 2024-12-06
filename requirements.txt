@@ -9,3 +9,8 @@ rank_bm25
 selenium
 bs4
 requests
+
+// for back-end
+flask
+flask_cors
+flask_sqlalchemy
