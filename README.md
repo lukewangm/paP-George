@@ -1,7 +1,7 @@
 # Group 20
 CSCI401 / Fall 2024
 
-## Stetup
+## Setup
 ### Setting up environment
 1. Install Python 3.8 or later
 2. Install the required packages with `pip install -r requirements.txt`
