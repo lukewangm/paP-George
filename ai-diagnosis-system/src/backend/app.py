@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import json
-import sys
-import os
 from main import get_openai_response
 
 app = Flask(__name__)
@@ -38,6 +36,7 @@ def format_payload(payload):
 # API route to handle the diagnosis request
 @app.route("/submission", methods=["POST"])
 def diagnose():
+    """API route to handle the diagnosis request"""
     payload = request.json
 
     if not payload:
