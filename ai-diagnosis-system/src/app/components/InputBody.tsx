@@ -11,7 +11,14 @@ type Payload = {
   sex: string | null;
 };
 
-type ResponseData = [string, string, string]; // Assuming the response is an array with exactly three strings
+interface CaseReport {
+  id: string;
+  title: string;
+  explanation: string;
+  url: string;
+}
+
+type ResponseData = [CaseReport, CaseReport, CaseReport]; // Assuming the response is an array with exactly three strings
 
 // Temporary fake response function
 const fakeFetch = () => {
@@ -45,13 +52,36 @@ async function fetchItems(payload: Payload): Promise<ResponseData> {
           throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data: ResponseData = await response.json();
+      // real data
+      var data: ResponseData = await response.json();
 
+      //fake data for structuring
+      const caseReports = [
+        {
+          id: "12",
+          explanation: "This case is relevant because it presents a patient with pulmonary emboli that also had issues related to adrenal hemorrhage, similar to the unexpected nature of the pulmonary emboli in the current diagnosis. It highlights complications that can occur with underlying conditions that aren’t immediately apparent.",
+          url: "https://jmedicalcasereports.biomedcentral.com/articles/10.1186/s13256-024-04834-3",
+          title: "Bilateral adrenal hemorrhage in a postpartum woman with multiple thromboemboli: A case report"
+        },
+        {
+          id: "16",
+          explanation: "Though primarily focused on fungal infections, this case demonstrates important symptoms such as shortness of breath, which aligns with the current patient's respiratory issues. The emphasis on the diagnosis of pulmonary conditions is significant.",
+          url: "https://jmedicalcasereports.biomedcentral.com/articles/10.1186/s13256-024-04836-1",
+          title: "Disseminated Cryptococcus over pancreas, lung, and brain: a case report"
+        },
+        {
+          id: "18",
+          explanation: "This case deals with complications arising after a viral infection, resulting in respiratory symptoms, and although the underlying cause differs, it provides context on how respiratory issues can manifest in the post-viral stage, which may inform treatment options or considerations.",
+          url: "https://jmedicalcasereports.biomedcentral.com/articles/10.1186/s13256-024-04812-9",
+          title: "Circadian re-set repairs long-COVID in a prodromal Parkinson 2019s parallel: a case series"
+        }
+      ];
       const [item1, item2, item3] = data;
       console.log("Item 1:", item1);
       console.log("Item 2:", item2);
       console.log("Item 3:", item3);
-
+      
+      // return data;
       return data;
 
   } catch (error) {
@@ -64,8 +94,9 @@ const InputBody = () => {
   const router = useRouter();
   const [result, setResult] = useState(null);
 
-  const handleNavigation = (result: string) => {
-    router.push(`/result?data=${encodeURIComponent(result)}`);
+  const handleNavigation = (caseReport: CaseReport[]) => {
+    const encodedData = encodeURIComponent(JSON.stringify(caseReport));
+    router.push(`/result?data=${encodedData}`);
   };
 
   async function onSubmit(formData: { get: (arg0: string) => any; }) {
@@ -78,26 +109,11 @@ const InputBody = () => {
       age: formData.get("age"),
       sex: formData.get("sex")
   };
-    
-    fetch("/submission", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  
     try {
       const data = await fetchItems(payload)
         .then(items => {
           console.log("Received items:", items);
-          console.log('Success:', data);
-          alert(`Response: ${JSON.stringify(data)}`); // Show the fake message
-          // setResult(data.json());
-          handleNavigation(JSON.stringify(data));
+          handleNavigation(items);
         });
     } catch (error) {
       console.error('Error:', error);

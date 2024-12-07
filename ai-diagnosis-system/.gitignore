@@ -13,8 +13,9 @@
 /.next/
 /out/
 
-# production
+# production build output
 /build
+/scraper/articles.sqlite
 
 # misc
 .DS_Store

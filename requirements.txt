@@ -1,0 +1,16 @@
+openai
+numpy
+nltk
+
+# for bm25
+rank_bm25
+
+# for scraper
+selenium
+bs4
+requests
+
+// for back-end
+flask
+flask_cors
+flask_sqlalchemy

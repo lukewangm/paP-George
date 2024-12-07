@@ -1,0 +1,10 @@
+Massive pulmonary embolism in a COVID-19 patient: a case report
+
+Background
+Myocardial injury is associated with excess mortality in severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) infections, and the mechanisms of injury are diverse. Coagulopathy associated with this infection may have unique cardiovascular implications.
+
+Case summary
+We present a case of 62-year-old male who presented after experiencing syncope and cardiac arrest. Given the clinical presentation and electrocardiographic findings, there was concern for acute coronary syndrome. However, coronary angiogram did not reveal significant coronary obstruction. Due to the unclear nature of his presentation, a bedside echocardiogram was rapidly performed and was indicative of right ventricular strain. Due to these findings, a pulmonary angiogram was performed that revealed massive pulmonary embolism. He successfully underwent catheter-directed thrombolysis and, after a prolonged hospital stay, was discharged home on lifelong anticoagulation.
+
+Discussion
+The impact of coronavirus disease-2019 (COVID-19) on the cardiovascular system has been prominent and multifaceted. COVID-19 can have wide-ranging effects on the cardiovascular system due to coagulopathy with resultant venous and arterial thrombo-embolism. Due to the critical condition of many patients affected by COVID-19, imaging for thrombo-embolic events is often delayed. With the use of bedside echocardiogram, observation of right ventricular strain may be critical in raising suspicion for pulmonary embolism, especially when atypical features are noted on electrocardiogram.
