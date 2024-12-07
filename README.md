@@ -25,3 +25,9 @@ $ cd ai-diagnosis-system
 $ npm run dev (if not working, run 'npm run build' first)
 ```
 
+## Debugging the system
+### Debugging the backend
+If the backend, especially the OpenAI API call is not working, it is most likely because `credentials.py` was not placed in the right directory. 
+
+### Debugging in general
+If a problem occurs, try running everything again. These errors are rare (and we have tried our best to mitigate this), but because the AI is not stable, it can cause errors. 
