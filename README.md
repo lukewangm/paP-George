@@ -13,12 +13,15 @@ Prepare the dataset by going into the "scraper" folder with command `cd scraper`
 At the root directory, create a file called `credentials.py` and add the OpenAI API key as a variable called `OPENAI_API_KEY`. To create the OpenAI API Key, you would need to setup an OpenAI account. Please refer to this website for more details. [OpenAI Setup Documentation](https://platform.openai.com/docs/quickstart)
 
 ### Starting the backend flask server
+```
 $ cd ai-diagnosis-system/src/backend
 $ source venv/bin/activate
 $ python app.py
+```
 
 ### Starting the frontend next server
+```
 $ cd ai-diagnosis-system
 $ npm run dev (if not working, run 'npm run build' first)
-
+```
 
