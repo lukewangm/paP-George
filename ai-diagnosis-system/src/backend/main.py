@@ -10,7 +10,6 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-nltk.download()
 nltk.download('punkt_tab')
 nltk.download('stopwords')
 from nltk.corpus import stopwords
