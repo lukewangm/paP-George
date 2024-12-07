@@ -21,7 +21,7 @@ def bm25_prefilter(cases: list, query: str, k=10):
     query = clean(query)
     scores = bm25_comparer.get_scores(query)
 
-    return sorted(zip(cases, scores), key=lambda x: x[1], reverse=True)[:k]
+    return [r[0] for r in sorted(zip(cases, scores), key=lambda x: x[1], reverse=True)[:k]]
 
 if __name__ == "__main__":
     cases = []
