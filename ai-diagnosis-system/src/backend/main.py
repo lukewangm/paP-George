@@ -121,7 +121,7 @@ def get_openai_response(query, num_articles=10):
         - Select the most relevant cases that could provide insight into the current diagnosis.
         - Explain why you believe this case is the most relevant, based on symptoms, medical history, or other key details.
     
-        You can select multiple case studies if you believe they are all relevant.
+        You can select multiple case studies if you believe they are all relevant. You should give at least 3 cases and at most 5 cases.
     
         Your response should be in a json format of the following structure:
         {'relevant_cases': [{
