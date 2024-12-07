@@ -1,0 +1,15 @@
+Treatment, prognosis, and follow-up of acute pulmonary embolism in adults
+
+INTRODUCTION
+
+Acute pulmonary embolism (PE) is a common and sometimes fatal disease with a variable clinical presentation. It is critical that therapy be administered in a timely fashion [1-5].
+
+The treatment, prognosis, and follow-up of patients with acute PE are reviewed here. The epidemiology, pathophysiology, clinical presentation, and diagnosis of PE, as well as detailed discussions of anticoagulation and thrombolysis in patients with PE are presented separately. (See "Epidemiology and pathogenesis of acute pulmonary embolism in adults" and "Clinical presentation, evaluation, and diagnosis of the nonpregnant adult with suspected acute pulmonary embolism" and "Approach to thrombolytic (fibrinolytic) therapy in acute pulmonary embolism: Patient selection and administration" and "Venous thromboembolism: Initiation of anticoagulation".)
+
+The approach to treatment outlined in this topic is, in general, consistent with strategies outlined by several international societies including the American College of Chest Physicians, the American College of Physicians, the European Society of Cardiology, the European Respiratory Society, the American Society of hematology, and others [6-10].
+
+INITIAL APPROACH AND RESUSCITATION
+
+The initial approach to patients with suspected PE should focus upon stabilizing the patient while clinical evaluation and definitive diagnostic testing are ongoing [11]. Anticoagulation should be initiated even prior to confirming the diagnosis of PE if risk benefit regarding suspicion of PE and risk of bleeding appear favorable. Once diagnosis is confirmed, risk stratification is crucial. It is also important to triage and risk stratify the patients to identify which patients may benefit from inter hospital transfer.
+
+Assess hemodynamic stability — The initial approach to patients with suspected PE depends upon whether the patient is hemodynamically stable or unstable as shown in the algorithm (algorithm 1A-B). (See "Epidemiology and pathogenesis of acute pulmonary embolism in adults", section on 'Nomenclature'.)
