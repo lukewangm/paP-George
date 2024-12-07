@@ -36,6 +36,7 @@ def format_payload(payload):
 # API route to handle the diagnosis request
 @app.route("/submission", methods=["POST"])
 def diagnose():
+    """API route to handle the diagnosis request"""
     payload = request.json
 
     if not payload:

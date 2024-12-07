@@ -3,6 +3,7 @@ import nltk
 from nltk.corpus import stopwords
 
 def clean(s):
+    """Clean the string s by removing stopwords and non-alphanumeric characters. Used for BM25."""
     s = nltk.word_tokenize(s.lower())
     s = [word for word in s if word not in stopwords.words('english')]
     s = [word for word in s if word.isalnum()]

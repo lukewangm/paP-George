@@ -2,6 +2,7 @@ import argparse
 import sqlite3
 
 def get_all(path_to_sqlite):
+    """Gets all articles from the database"""
     conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
@@ -19,6 +20,7 @@ def get_all(path_to_sqlite):
     return articles
 
 def reset(path_to_sqlite):
+    """Resets (empties) the database"""
     conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
@@ -39,6 +41,7 @@ def reset(path_to_sqlite):
     conn.close()
 
 def get_range(path_to_sqlite, start, end):
+    """Gets articles from the database within a certain range"""
     conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 
@@ -56,6 +59,7 @@ def get_range(path_to_sqlite, start, end):
     return articles
 
 def get_size(path_to_sqlite):
+    """Gets the number of articles in the database"""
     conn = sqlite3.connect(path_to_sqlite)
     cursor = conn.cursor()
 

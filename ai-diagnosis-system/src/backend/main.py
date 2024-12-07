@@ -3,6 +3,8 @@ import os
 import nltk
 import ssl
 
+from nltk import deprecated
+
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -24,6 +26,7 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 
 # Case object for each case
+@deprecated
 class Case:
     def __init__(self, text, file_name=""):
         self.file_name = file_name
@@ -49,6 +52,7 @@ class Case:
         return self.__str__()
 
 
+@deprecated
 def read_cases(p):
     collected_cases = []
     for root, dirs, files in os.walk(p):
@@ -58,6 +62,7 @@ def read_cases(p):
                     collected_cases.append(Case(f.read(), file_name=os.path.join(root, file)))
     return collected_cases
 
+@deprecated
 def build_database():
     # TODO: change this to match the new database structure later
     sets = ["data/note_1_cases", "data/note_2_cases", "data/note_3_cases"]
@@ -69,6 +74,7 @@ def build_database():
     return total_cases
 
 def call_api(prompt, system_prompt=None):
+    """Calls the OpenAI API with the given prompt and returns the response"""
     client = OpenAI()
 
     if system_prompt != None:
@@ -92,14 +98,16 @@ def call_api(prompt, system_prompt=None):
     return return_str
 
 def get_openai_response(query, num_articles=10):
-    # this function will return an array of dictionaries with the following structure:
-    # [{
-    #     "id": "1",
-    #     "explanation": "case_1 is relevant because..."
-    #     "url": "https://www.example.com",
-    #     "title": "Case 1 Title"
-    # }]
-    # PLEASE make sure the query passed in is a STRING containing the doctor's note.
+    """
+    this function will return an array of dictionaries with the following structure:
+    [{
+        "id": "1",
+        "explanation": "case_1 is relevant because..."
+        "url": "https://www.example.com",
+        "title": "Case 1 Title"
+    }]
+    PLEASE make sure the query passed in is a STRING containing the doctor's note.
+    """
 
     path_to_sqlite = "scraper/articles.sqlite"
 
@@ -141,17 +149,6 @@ def get_openai_response(query, num_articles=10):
         id, title, full_link, abstract = case
         prompt += f"<case_{id}>: \n{abstract}\n\n"
     # Gets the response
-
-    # TODO: remove later, but cache the results for now to save API calls
-    # cached_dir_fn = "query_cache.txt"
-    # if os.path.exists(cached_dir_fn):
-    #     with open(cached_dir_fn, 'r') as f:
-    #         return_str = f.read()
-    # else:
-    #     print("about to call api")
-    #     return_str = call_api(prompt)
-    #     with open(cached_dir_fn, 'w') as f:
-    #         f.write(return_str)
 
     return_str = call_api(prompt)
     print(return_str)
